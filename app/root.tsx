@@ -13,6 +13,7 @@ import type {Shop} from '@shopify/hydrogen/storefront-api-types';
 import appStyles from './styles/app.css';
 import favicon from '../public/favicon.svg';
 import {useNonce} from '@shopify/hydrogen';
+import {Layout} from './components/Layout';
 
 // This is important to avoid re-fetching root queries on sub-navigations
 export const shouldRevalidate: ShouldRevalidateFunction = ({
@@ -68,9 +69,9 @@ export default function App() {
         <Links />
       </head>
       <body>
-        <h1>Hello, {name}</h1>
-        <p>This is a custom storefront powered by Hydrogen</p>
-        <Outlet />
+        <Layout title={name}>
+          <Outlet />
+        </Layout>
         <ScrollRestoration nonce={nonce} />
         <Scripts nonce={nonce} />
         <LiveReload nonce={nonce} />
