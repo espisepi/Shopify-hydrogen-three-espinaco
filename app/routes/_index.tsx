@@ -32,6 +32,7 @@ export async function loader({context}: LoaderArgs) {
 }
 
 export default function Index() {
+  // useLoaderData funciona gracias a que hemos definido la funcion: "export async function loader({context}: LoaderArgs)" en este mismo archivo
   const {collections} = useLoaderData();
   return (
     <section className="w-full gap-4">
