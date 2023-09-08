@@ -1,15 +1,16 @@
 import {useLoaderData} from '@remix-run/react';
+import {getPaginationVariables} from '@shopify/hydrogen';
 import {Collection as CollectionType} from '@shopify/hydrogen/storefront-api-types';
 import {LoaderArgs, json} from '@shopify/remix-oxygen';
 import ProductGrid from '~/components/ProductGrid';
 
-interface SeoParams {
+interface DataType {
   data: {
     collection: CollectionType;
   };
 }
 
-const seo = ({data}: SeoParams) => ({
+const seo = ({data}: DataType) => ({
   title: data?.collection?.title,
   description: data?.collection?.description.substr(0, 154),
 });
@@ -18,10 +19,14 @@ export const handle = {
   seo,
 };
 
-export async function loader({params, context}: LoaderArgs) {
+export async function loader({params, context, request}: LoaderArgs) {
+  const paginationVariables = getPaginationVariables(request, {
+    pageBy: 4,
+  });
   const {handle} = params;
   const {collection} = await context.storefront.query(COLLECTION_QUERY, {
     variables: {
+      ...paginationVariables,
       handle,
     },
   });
@@ -36,6 +41,13 @@ export async function loader({params, context}: LoaderArgs) {
   return json({
     collection,
   });
+}
+
+export function meta({data}: DataType) {
+  return [
+    {title: data?.collection?.title ?? 'Collection'},
+    {description: data?.collection?.description},
+  ];
 }
 
 export default function Collection() {
@@ -66,13 +78,24 @@ export default function Collection() {
 }
 
 const COLLECTION_QUERY = `#graphql
-  query CollectionDetails($handle: String!) {
+  query CollectionDetails(
+    $handle: String!
+    $first: Int
+    $last: Int
+    $startCursor: String
+    $endCursor: String
+  ) {
     collection(handle: $handle) {
       id
       title
       description
       handle
-      products(first: 4) {
+      products(
+        first: $first,
+        last: $last,
+        before: $startCursor,
+        after: $endCursor,
+      ) {
         nodes {
           id
           title
@@ -98,7 +121,14 @@ const COLLECTION_QUERY = `#graphql
             }
           }
         }
+        pageInfo {
+          startCursor
+          hasPreviousPage
+          hasNextPage
+          hasNextPage
+          endCursor
+        }
       }
     }
   }
-`;
+  `;
