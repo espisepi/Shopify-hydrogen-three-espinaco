@@ -27,6 +27,7 @@ export function meta() {
   ];
 }
 
+// Esta funcion devuelve los datos de la peticion al hook useLoaderData() que se utiliza mas abajo
 export async function loader({context}: LoaderArgs) {
   return await context.storefront.query<LoaderData>(COLLECTIONS_QUERY);
 }
