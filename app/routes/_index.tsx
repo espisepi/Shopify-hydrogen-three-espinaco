@@ -1,18 +1,7 @@
 import {useLoaderData, Link} from '@remix-run/react';
 import {LoaderArgs} from '@shopify/remix-oxygen';
 import {Image} from '@shopify/hydrogen';
-
-interface Collection {
-  id: string;
-  title: string;
-  handle: string;
-  image?: {
-    altText: string;
-    width: number;
-    height: number;
-    url: string;
-  };
-}
+import {Collection} from '@shopify/hydrogen/storefront-api-types';
 
 interface LoaderData {
   collections: {

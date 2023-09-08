@@ -1,5 +1,21 @@
 import {useLoaderData} from '@remix-run/react';
+import {Collection as CollectionType} from '@shopify/hydrogen/storefront-api-types';
 import {LoaderArgs, json} from '@shopify/remix-oxygen';
+
+interface SeoParams {
+  data: {
+    collection: CollectionType;
+  };
+}
+
+const seo = ({data}: SeoParams) => ({
+  title: data?.collection?.title,
+  description: data?.collection?.description.substr(0, 154),
+});
+
+export const handle = {
+  seo,
+};
 
 export async function loader({params, context}: LoaderArgs) {
   const {handle} = params;
