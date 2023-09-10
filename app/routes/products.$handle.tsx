@@ -3,6 +3,9 @@ import {LoaderArgs, json} from '@shopify/remix-oxygen';
 import {MediaFile} from '@shopify/hydrogen-react';
 import {ReactElement} from 'react';
 
+// TODO: Create a product image gallery
+// https://shopify.dev/docs/custom-storefronts/hydrogen/building/product-details-page
+
 export async function loader({params, context}: LoaderArgs) {
   const {handle} = params;
   const {product} = await context.storefront.query(PRODUCT_QUERY, {
