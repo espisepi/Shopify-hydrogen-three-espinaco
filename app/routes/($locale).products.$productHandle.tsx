@@ -36,6 +36,7 @@ import {seoPayload} from '~/lib/seo.server';
 import type {Storefront} from '~/lib/type';
 import {routeHeaders} from '~/data/cache';
 import {MEDIA_FRAGMENT, PRODUCT_CARD_FRAGMENT} from '~/data/fragments';
+import {ModelScene, ModelsScene} from '~/components/canvas/ModelScene';
 
 export const headers = routeHeaders;
 
@@ -137,10 +138,13 @@ export default function Product() {
   const {media, title, vendor, descriptionHtml} = product;
   const {shippingPolicy, refundPolicy} = shop;
 
+  console.log(product);
+
   return (
     <>
       <Section className="px-0 md:px-8 lg:px-12">
         <div className="grid items-start md:gap-6 lg:gap-20 md:grid-cols-2 lg:grid-cols-3">
+          <ModelsScene medias={media.nodes} />
           <ProductGallery
             media={media.nodes}
             className="w-full lg:col-span-2"
@@ -494,7 +498,7 @@ const PRODUCT_QUERY = `#graphql
       selectedVariant: variantBySelectedOptions(selectedOptions: $selectedOptions) {
         ...ProductVariantFragment
       }
-      media(first: 7) {
+      media(first: 250) {
         nodes {
           ...Media
         }
