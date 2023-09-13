@@ -16,6 +16,8 @@ module.exports = {
   serverModuleFormat: 'esm',
   serverPlatform: 'neutral',
   serverMinify: process.env.NODE_ENV === 'production',
+  postcss: true,
+  tailwind: true,
   future: {
     v2_dev: true,
     v2_meta: true,
@@ -24,5 +26,4 @@ module.exports = {
     v2_routeConvention: true,
     v2_normalizeFormMethod: true,
   },
-  tailwind: true,
 };
